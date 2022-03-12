@@ -10,7 +10,7 @@ module.exports = {
       fs: false, // the solution
     };
     // config.output.webassemblyModuleFilename = 'static/wasm/[modulehash].wasm'
-    config.experiments = { asyncWebAssembly: true, topLevelAwait: true };
+    config.experiments = { asyncWebAssembly: true, topLevelAwait: true, layers: true };
     config.module.rules.push({
       test: /\.wasm$/i,
       type: "javascript/auto",
