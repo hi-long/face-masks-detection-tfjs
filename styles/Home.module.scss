@@ -1,0 +1,45 @@
+.section {
+  position: relative;
+  width: max-content;
+  margin: auto;
+}
+
+.main-cv {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.dropzone {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.models {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  .model {
+    padding: .5rem 1rem;
+    color: black;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: .2s;
+  
+    &:active {
+      transform: scale(.8);
+    }
+    .active {
+      background-color: black;
+      color: white;
+    }
+  }
+}
+
+
