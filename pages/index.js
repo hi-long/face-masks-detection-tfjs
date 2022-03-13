@@ -5,6 +5,7 @@ const tf = require("@tensorflow/tfjs");
 import "@tensorflow/tfjs-backend-wasm";
 import { setWasmPaths } from "@tensorflow/tfjs-backend-wasm";
 import Stats from "stats.js";
+import Image from "next/image";
 // import Tracker from "../utils/tracking/main";
 
 const labels = [
@@ -24,6 +25,7 @@ export default function Home() {
   const [inputSz, setInputSz] = useState(0);
   const [preview, setPreview] = useState("");
   const [modelLoading, setModelLoading] = useState(false)
+  const [funcsShowing, setFuncsShowing] = useState(true);
   const vidPlaying = useRef(false);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -51,7 +53,6 @@ export default function Home() {
   const loadModel = async _model => {
     try {
       const { name, inputSz } = { ..._model };
-      console.log(_model)
       setModelLoading(true);
       const model = await tf.loadGraphModel(`/${ name }/model.json`);
       setModel(model);
@@ -162,26 +163,82 @@ export default function Home() {
     vidPlaying.current = value;
   };
 
-  if (modelLoading) {
-    return <p style={{ textAlign: "center" }}>Model is loading ...</p>
-  }
 
   return (
     <Fragment>
-      <section>
-        <div className={styles.models}>
-          <p>Select model: </p>
-          {models.map((m) => (
-            <button
-              key={m.inputSz}
-              className={[styles.model, inputSz === m.inputSz ? 'active' : ''].join(' ')}
-              onClick={() => { loadModel(m) }}>{m.inputSz}</button>
-          ))}
-        </div>
+      {modelLoading && (
+        <p style={{ textAlign: "center" }}>Model is loading ...</p>
+      )}
+      <section className={styles.funcs_btn}>
+        <button onClick={() => setFuncsShowing(!funcsShowing)}>
+          <Image src="/icons/up.png" width={24} height={24} />
+        </button>
       </section>
-      <section className={styles["section"]}>
-        {preview && (
-          <>
+      {funcsShowing && (
+        <section className={styles.funcs}>
+          <div className={styles.upload}>
+            <Dropzone onDrop={onDrop}>
+              {({ getRootProps, getInputProps }) => (
+                <div className={styles["upload--dropzone"]} {...getRootProps()}>
+                  <input {...getInputProps()} />
+                  <Image
+                    src="/icons/video.png"
+                    width={44}
+                    height={44}
+                    alt="video upload"
+                  />
+                  <p>
+                    Drop your video here, or <span>browse</span>
+                  </p>
+                </div>
+              )}
+            </Dropzone>
+            <div className={styles["upload--url"]}>
+              <label htmlFor="url">
+                or <span className={styles.underlined}>URL</span>
+              </label>
+              <input
+                id="url"
+                type="text"
+                placeholder="Input an url + Enter to apply"
+              />
+            </div>
+          </div>
+          <div className={styles.config}>
+            <div className={styles.models}>
+              <p>Select model: </p>
+              <div className={styles["models_list"]}>
+                {models.map((m) => (
+                  <button
+                    key={m.inputSz}
+                    className={[
+                      styles.model,
+                      inputSz === m.inputSz ? styles["active"] : "",
+                    ].join(" ")}
+                    onClick={() => {
+                      loadModel(m);
+                    }}
+                  >
+                    {m.inputSz}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {preview && (
+        <section className={styles.preview}>
+          {/* <div className={styles.preview_effect}>
+            <Image
+              src={`/icons/${vidPlaying.current ? "play" : "pause"}.png`}
+              height={64}
+              width={64}
+              alt="video status"
+            />
+          </div> */}
+          <div className={styles.preview_video}>
             <video
               ref={videoRef}
               src={preview}
@@ -217,19 +274,9 @@ export default function Home() {
                 setVidPlaying(!vidPlaying.current);
               }}
             ></canvas>
-          </>
-        )}
-      </section>
-      <Dropzone onDrop={onDrop}>
-        {({ getRootProps, getInputProps }) => (
-          <section>
-            <div className={styles.dropzone} {...getRootProps()}>
-              <input {...getInputProps()} />
-              <p>Drag and drop some files here, or click to select files</p>
-            </div>
-          </section>
-        )}
-      </Dropzone>
+          </div>
+        </section>
+      )}
     </Fragment>
   );
 }

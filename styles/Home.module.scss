@@ -1,44 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+$border-radius: 10px;
+
 .section {
   position: relative;
   width: max-content;
   margin: auto;
 }
 
-.main-cv {
-  display: block;
+.funcs {
   position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.dropzone {
-  margin-top: 2rem;
-  text-align: center;
-  font-size: 1.5rem;
-}
-
-.models {
-  width: 100%;
+  top: 5rem;
+  left: 50%;
+  transform: translate(-50%, 0);
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
-  .model {
-    padding: .5rem 1rem;
-    color: black;
+  gap: 1rem;
+  font-family: 'Poppins', sans-serif;
+  z-index: 111;
+  & > div {
+    width: 450px;
+    padding: 10px;
     background-color: white;
-    border: 1px solid black;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: .2s;
-  
-    &:active {
-      transform: scale(.8);
+    border-radius: $border-radius;
+    box-shadow: 0px 0px 10px 1px #e1e1e1;
+  }
+  .upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &--dropzone {
+      width: 100%;
+      text-align: center;
+      padding: 5rem 1rem;
+      margin: .2rem;
+      border: 1px dashed lightgray;
+      border-radius: $border-radius;
+      cursor: pointer;
+      p {
+        margin: 1rem 0 0 0;
+        font-size: 1rem;
+        font-weight: 500;
+      }
     }
-    .active {
-      background-color: black;
-      color: white;
+    &--url {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 0;
+      width: 100%;
+      label {
+        font-size: 1.1rem;
+        font-weight: 500;
+        
+      }
+      input {
+        width: 100%;
+        flex-grow: 1;
+        padding: .5rem 1rem;
+        border: 1px solid lightgray;
+        border-radius: $border-radius - 5px;
+        font-size: .9rem;
+        line-height: 1.5rem;
+        &:focus {
+          outline: none;
+        }
+      }
     }
+  }
+  .config {
+    header {
+      * {
+        text-align: center;
+      }
+    }
+    .models {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      &_list {
+        flex-grow: 1;
+        display: flex;
+        justify-content: space-between;
+        margin-left: .5rem;
+        button {
+          padding: .5rem 1rem;
+          color: black;
+          background-color: white;
+          border: 1px solid black;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: .2s;
+        
+          &:active {
+            transform: scale(.8);
+          }
+          &.active {
+            background-color: black;
+            color: white;
+          }
+        }
+      }
+    }
+  }
+  span {
+    color: #3399fe;
+    &.underlined {
+      text-decoration: underline;
+    }
+  }
+  &_btn {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 111;
+    button {
+      width: 44px;
+      height: 44px;
+      color: black;
+      background-color: white;
+      border: none;
+      border-radius: 40px;
+      box-shadow: 0px 0px 10px 1px #e1e1e1;
+      cursor: pointer;
+      &, 
+      * {
+        transition: .2s;
+      }
+    
+      &:active {
+        animation: btn_up 2s;
+
+        img {
+          transform: rotate(180deg);
+        }
+      }
+    }
+  }
+}
+
+.preview {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  .main-cv {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+
+@keyframes btn_up {
+  from {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  } to {
+    transform: translateY(-2rem) scale(.8);
+    opacity: 0;
   }
 }
 
